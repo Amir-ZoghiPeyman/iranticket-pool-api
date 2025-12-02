@@ -1,0 +1,1 @@
+export const BASE_API = "https://iranticket.co/api/v1/Pool";
