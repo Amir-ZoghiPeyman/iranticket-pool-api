@@ -9,15 +9,7 @@ const poolCards = $("#pool-cards");
 const poolPagination = $("#pool-pagination");
 
 // handle reserve button
-function handleClick(event, el) {
-    event.preventDefault();
-    const href = el.attr("href");
-    if (!href) return;
-    history.pushState("", "", href);
-    const path = href.split("/");
-    const poolId = path.at(-1);
-    poolDetails(poolId);
-}
+
 
 // api promise
 function loadPools(page) {
