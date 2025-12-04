@@ -7,76 +7,91 @@ import poolDetails from './poolDetails';
 // selectors
 const poolCards = $("#pool-cards");
 const poolPagination = $("#pool-pagination");
+const poolDetail = $("#pool-detail");
 
-// handle reserve button
-function handleClick(event, el) {
-    event.preventDefault();
-    const href = el.attr("href");
-    if (!href) return;
-    history.pushState("", "", href);
-    const path = href.split("/");
-    const poolId = path.at(-1);
-    poolDetails(poolId);
-}
+let poolsCache = [];
 
-// api promise
-function loadPools(page) {
+// API call
+function loadPools(page = 1) {
     poolList(page)
         .then(res => {
-            renderList(res.pool),
-                renderPagination(res.currentPage, res.maxPage)
+            poolsCache = res.pool;
+            renderList(res.pool);
+            renderPagination(res.currentPage, res.maxPage);
+
+            poolCards.show();
+            poolPagination.show();
+            poolDetail.hide();
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
 }
 
-// rendering list of cards
+// render list of cards
 function renderList(pools) {
     poolCards.empty();
 
     pools.forEach(pool => {
         const card = $(`
             <div class="card">
-                <!-- info -->
                 <img src="https://iranticket.co/${pool.poolImg[0]?.src}" alt="${pool.title}" />
                 <div>
                     <h4>${pool.title}</h4>
                     <p>${pool.add}</p>
                 </div>
-                <!-- reserve -->
                 <div>
                     <p>${pool.minPrice}</p>
-                    <a href="/pool/${pool.id}" onClick="handleButton(event, this)">
+                    <a href="/pool/${pool.id}">
                         <button>رزرو</button>
                     </a>
                 </div>
             </div>
         `);
+
+        card.find("button").on("click", (e) => {
+            e.preventDefault();
+            const poolId = pool.id;
+
+            history.pushState("", "", `/pool/${poolId}`);
+
+            showPoolDetail(poolId);
+        });
+
         poolCards.append(card);
-    })
+    });
 }
 
-// rendering logic
+// render pagination
 function renderPagination(currentPage, maxPage) {
     poolPagination.empty();
 
     const prev = $(`<button ${currentPage === 1 ? "disabled" : ""}>قبلی</button>`);
     const next = $(`<button ${currentPage === maxPage ? "disabled" : ""}>بعدی</button>`);
-    const info = $(`<span>${maxPage}/ ${currentPage}</span>`);
+    const info = $(`<span>${currentPage} / ${maxPage}</span>`);
 
     prev.on("click", () => loadPools(currentPage - 1));
     next.on("click", () => loadPools(currentPage + 1));
 
-    poolPagination.append(next, info, prev);
+    poolPagination.append(prev, info, next);
 }
 
-// route logic
+function showPoolDetail(poolId) {
+    poolCards.hide();
+    poolPagination.hide();
+    poolDetail.show();
+
+    poolDetails(poolId, poolsCache);
+}
+
 function checkPathState() {
     const pathName = location.pathname;
+
     if (pathName.startsWith("/pool/")) {
-        const path = pathName.split("/");
-        const poolId = path.at(-1);
-        poolDetails(poolId);
+        const poolId = pathName.split("/").at(-1);
+        showPoolDetail(poolId);
     } else {
+        poolDetail.hide();
+        poolCards.show();
+        poolPagination.show();
         loadPools();
     }
 }
@@ -85,4 +100,4 @@ $(window).on("popstate", checkPathState);
 
 $(function () {
     checkPathState();
-})
+});
