@@ -1,0 +1,27 @@
+.font-size {
+  font-size: small;
+}
+
+.main-color {
+  color: #1d556b;
+}
+
+.gender-icon {
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+.pagination-btn {
+  border: none;
+  background: none;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
