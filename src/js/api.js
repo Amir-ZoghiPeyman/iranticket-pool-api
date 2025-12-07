@@ -4,26 +4,15 @@ import { BASE_API } from "./config";
 // pool list api
 export function poolList(page = 1) {
     return new Promise((resolve, reject) => {
-
         $.ajax({
             url: `${BASE_API}/poolList`,
             method: "GET",
             dataType: "json",
             timeout: 15000,
             data: { page },
-
-            beforeSend: function () {
-                console.log("Loading pool list...");
-            },
-
-            success: function (res) {
-                console.log("API Response:", res);
-                resolve(res);
-            },
-
-            error: function (xhr, status, error) {
-                console.error("PoolList API Error:", { xhr, status, error });
-
+        })
+            .done(res => resolve(res))
+            .fail((xhr, status, error) => {
                 let message = "Error fetching data from the server";
 
                 if (status === "timeout") {
@@ -34,36 +23,24 @@ export function poolList(page = 1) {
                     message = "Server encountered an error (500)";
                 }
 
-                reject({ status, error, message });
-            }
-        });
-
+                console.error("PoolList API Error:", { xhr, status, error, message });
+                reject(new Error(message));
+            });
     });
 }
 
 // pool details api
 export function fetchPool(link) {
     return new Promise((resolve, reject) => {
-
         $.ajax({
             url: `${BASE_API}/pool/`,
             method: "GET",
             dataType: "json",
             timeout: 15000,
             data: { link },
-
-            beforeSend: function () {
-                console.log("Loading pool detail...");
-            },
-
-            success: function (res) {
-                console.log("API Response:", res);
-                resolve(res);
-            },
-
-            error: function (xhr, status, error) {
-                console.error("PoolDetail API Error:", { xhr, status, error });
-
+        })
+            .done(res => resolve(res))
+            .fail((xhr, status, error) => {
                 let message = "Error fetching data from the server";
 
                 if (status === "timeout") {
@@ -74,9 +51,8 @@ export function fetchPool(link) {
                     message = "Server encountered an error (500)";
                 }
 
-                reject({ status, error, message });
-            }
-        });
-
+                console.error("PoolDetail API Error:", { xhr, status, error, message });
+                reject(new Error(message));
+            });
     });
 }
