@@ -5,96 +5,91 @@ import $ from "jquery";
 import poolList from "./api";
 import poolDetails from './poolDetails';
 
-// selectors
 const poolCards = $("#pool-cards");
 const poolPagination = $("#pool-pagination");
 const poolDetail = $("#pool-detail");
+const mainPage = $("#main-page");
 
-let poolsCache = [];
-
-// produce persian numbers
-function toFarsi(num) {
+// Persian number
+export default function toFarsi(num) {
     return num.toLocaleString("fa-IR");
 }
 
-// produce gender icon
 function genderIcon(sex) {
-    if (sex === 0) return "womanicon.svg"
-    else if (sex === 1) return "manicon.svg"
-    else if (sex === 2) return "menwomen.svg"
+    if (sex === 0) return "womanicon.svg";
+    if (sex === 1) return "manicon.svg";
+    return "menwomen.svg";
 }
 
-// API call
+// load list
 function loadPools(page = 1) {
     poolList(page)
         .then(res => {
-            poolsCache = res.pool;
             renderList(res.pool);
             renderPagination(res.currentPage, res.maxPage);
 
-            poolCards.show();
-            poolPagination.show();
+            mainPage.show();
             poolDetail.hide();
         })
         .catch(err => console.log(err));
 }
 
-// render list of cards
+// render cards
 function renderList(pools) {
     poolCards.empty();
 
     pools.forEach(pool => {
         const card = $(`
-        <div class="p-2 my-3 mx-2 shadow rounded-4 d-md-flex flex-row align-items-center gap-4">
-            <div class="position-relative">
+            <hr />
+            <div class="p-2 my-3 mx-2 shadow rounded-4 d-md-flex flex-row align-items-center gap-4">
 
-                <img 
-                    src="https://iranticket.co/img/icon/${genderIcon(pool.sex)}"
-                    class="gender-icon position-absolute bg-white rounded p-2"
-                />
-                
-                <img 
-                    src="https://iranticket.co/${pool.poolImg[0]?.src}" 
-                    alt="${pool.title}" 
-                    class="rounded-4 object-fit-cover img-fluid"
-                />
-
-            </div>
-
-            <div class="mt-3 w-100">
-            
-                <h4 class="font-size main-color">${pool.title}</h4>
-                <div class="d-flex font-size">
-                    <i class="bi bi-geo-alt-fill main-color"></i>
-                    <p>${pool.add}</p>
+                <div class="position-relative">
+                    <img 
+                        src="https://iranticket.co/img/icon/${genderIcon(pool.sex)}"
+                        class="position-absolute bg-white rounded p-2"
+                        id="gender-icon-list"
+                    />
+                    <img 
+                        src="https://iranticket.co/${pool.poolImg[0]?.src}" 
+                        alt="${pool.title}" 
+                        class="rounded-4 object-fit-cover img-fluid"
+                    />
                 </div>
-            
-                <hr />
-                <div class="d-flex justify-content-between">
-                    <p>${toFarsi(pool.minPrice)} تومان</p>
-                    <a href="/pool/${pool.id}">
-                      <button type="button" class="btn btn-success btn-sm">مشاهده استخر</button>
-                    </a>
-            </div>
-            </div>
-        </div>
 
+                <div class="mt-3 w-100">
+                    <h4 class="font-size main-color">${pool.title}</h4>
+
+                    <div class="d-flex font-size gap-2">
+                        <i class="bi bi-geo-alt-fill main-color"></i>
+                        <p>${pool.add}</p>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between">
+                        <p>${toFarsi(pool.minPrice)} تومان</p>
+                        <a href="/pool/${pool.link}" class="text-decoration-none">
+                            <button class="btn btn-success btn-sm">مشاهده استخر</button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         `);
 
         card.find("button").on("click", (e) => {
             e.preventDefault();
-            const poolId = pool.id;
 
-            history.pushState("", "", `/pool/${poolId}`);
+            history.pushState("", "", `/pool/${pool.link}`);
 
-            showPoolDetail(poolId);
+            showPoolDetail(pool.link);
         });
 
         poolCards.append(card);
     });
 }
 
-// render pagination
+// pagination
 function renderPagination(currentPage, maxPage) {
     poolPagination.empty();
 
@@ -108,31 +103,28 @@ function renderPagination(currentPage, maxPage) {
     poolPagination.append(next, info, prev);
 }
 
-// routing logic
-function showPoolDetail(poolId) {
-    poolCards.hide();
-    poolPagination.hide();
+// route handler
+function showPoolDetail(link) {
+    mainPage.hide();
     poolDetail.show();
 
-    poolDetails(poolId, poolsCache);
+    poolDetails(link);
 }
 
-function checkPathState() {
-    const pathName = location.pathname;
+function checkPath() {
+    const path = location.pathname;
 
-    if (pathName.startsWith("/pool/")) {
-        const poolId = pathName.split("/").at(-1);
-        showPoolDetail(poolId);
+    if (path.startsWith("/pool/")) {
+        const link = path.split("/").at(-1);
+        showPoolDetail(link);
     } else {
+        mainPage.show();
         poolDetail.hide();
-        poolCards.show();
-        poolPagination.show();
         loadPools();
     }
 }
 
-$(window).on("popstate", checkPathState);
-
+$(window).on("popstate", checkPath);
 $(function () {
-    checkPathState();
+    checkPath();
 });
