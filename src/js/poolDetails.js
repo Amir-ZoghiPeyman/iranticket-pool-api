@@ -95,8 +95,7 @@ export default async function poolDetails(link) {
                         <div class="d-flex gap-4">
                             <img 
                                 src="https://iranticket.co/img/icon/${genderIcon(pool.sex)}"
-                                class="bg-white rounded p-2"
-                                id="gender-icon-details"
+                                class="bg-white rounded p-2 gender-icon-details"
                             />
                             <div>
                                 <h4 class="font-size">نوع پذیرش</h4>
@@ -107,8 +106,7 @@ export default async function poolDetails(link) {
                         <div class="d-flex gap-4">
                             <img 
                                 src="https://iranticket.co/img/icon/Clock.svg"
-                                class="bg-white rounded p-2"
-                                id="gender-icon-details"
+                                class="bg-white rounded p-2 gender-icon-details"
                             />
                             <div>
                                 <h4 class="font-size">زمان فعالیت</h4>

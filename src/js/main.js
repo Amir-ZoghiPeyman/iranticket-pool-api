@@ -23,9 +23,49 @@ export function genderIcon(sex) {
     return "menwomen.svg";
 }
 
+// skeleton
+function skeleton(count = 4) {
+    poolCards.empty();
+
+    for (let i = 0; i < count; i++) {
+        const skeleton = $(`
+            <hr />
+            <div class="p-2 my-3 mx-2 shadow rounded-4 d-md-flex flex-row align-items-center gap-4">
+
+                <div class="position-relative">
+                    <div class="bg-light rounded-4" style="width:300px; height:200px;"></div>
+                </div>
+
+                <div class="mt-3 w-100">
+                    <h4 class="placeholder-glow">
+                        <span class="placeholder col-6"></span>
+                    </h4>
+
+                    <div class="d-flex gap-2 placeholder-glow">
+                        <i class="bi bi-geo-alt-fill main-color"></i>
+                        <span class="placeholder col-4"></span>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between align-items-center placeholder-glow">
+                        <span class="placeholder col-2"></span>
+                        <span class="placeholder col-4"></span>
+                    </div>
+                </div>
+
+            </div>
+        `);
+
+        poolCards.append(skeleton);
+    }
+}
+
+
 // load list
 async function loadPools(page = 1) {
     try {
+        skeleton();
         const res = await poolList(page);
 
         renderList(res.pool);
@@ -33,11 +73,11 @@ async function loadPools(page = 1) {
 
         mainPage.show();
         poolDetail.hide();
+
     } catch (err) {
         console.error("PoolList API Error:", err);
     }
 }
-
 
 // render cards
 function renderList(pools) {
@@ -71,10 +111,10 @@ function renderList(pools) {
 
                     <hr />
 
-                    <div class="d-flex justify-content-between">
-                        <p>${toFarsi(pool.minPrice)} تومان</p>
-                        <a href="/pool/${pool.link}" class="text-decoration-none">
-                            <button class="btn btn-success btn-sm">مشاهده استخر</button>
+                    <div class="d-flex justify-content-between align-items-center font-size">
+                        <p class="mt-0">${toFarsi(pool.minPrice)} تومان</p>
+                        <a href="/pool/${pool.link}" class="text-decoration-none button btn btn-success w-50">
+                            مشاهده استخر
                         </a>
                     </div>
                 </div>
