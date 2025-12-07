@@ -2,37 +2,42 @@ import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from "jquery";
-import poolList from "./api";
+import { poolList } from "./api";
 import poolDetails from './poolDetails';
 
+// selectors
 const poolCards = $("#pool-cards");
 const poolPagination = $("#pool-pagination");
 const poolDetail = $("#pool-detail");
 const mainPage = $("#main-page");
 
-// Persian number
-export default function toFarsi(num) {
+// persian number generator
+export function toFarsi(num) {
     return num.toLocaleString("fa-IR");
 }
 
-function genderIcon(sex) {
+// gender icons
+export function genderIcon(sex) {
     if (sex === 0) return "womanicon.svg";
     if (sex === 1) return "manicon.svg";
     return "menwomen.svg";
 }
 
 // load list
-function loadPools(page = 1) {
-    poolList(page)
-        .then(res => {
-            renderList(res.pool);
-            renderPagination(res.currentPage, res.maxPage);
+async function loadPools(page = 1) {
+    try {
+        const res = await poolList(page);
 
-            mainPage.show();
-            poolDetail.hide();
-        })
-        .catch(err => console.log(err));
+        renderList(res.pool);
+        renderPagination(res.currentPage, res.maxPage);
+
+        mainPage.show();
+        poolDetail.hide();
+    } catch (err) {
+        console.error("PoolList API Error:", err);
+    }
 }
+
 
 // render cards
 function renderList(pools) {
@@ -77,6 +82,7 @@ function renderList(pools) {
             </div>
         `);
 
+        // routing with link
         card.find("button").on("click", (e) => {
             e.preventDefault();
 
