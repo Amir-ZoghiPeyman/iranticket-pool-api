@@ -1,3 +1,4 @@
+/* font */
 @font-face {
   font-family: "Samim";
   src: url("../fonts/Samim.woff2") format("woff2"),
@@ -6,6 +7,7 @@
   font-style: normal;
 }
 
+/* pool list css */
 .font-size {
   font-size: small;
   font-family: "Samim", sans-serif;
@@ -27,11 +29,6 @@
   z-index: 10;
 }
 
-.gender-icon-details {
-  height: 40px;
-  width: 40px;
-}
-
 .pagination-btn {
   border: none;
   background: none;
@@ -39,32 +36,85 @@
   cursor: pointer;
 }
 
-.pagination-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.line-clamp {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-}
-
+/* pool detail css */
 @media (min-width: 992px) {
-  .line-clamp {
-    -webkit-line-clamp: 3;
+  .pool-card-lg {
+    flex-direction: column !important;
   }
+
+  .pool-card-img {
+    width: 100% !important;
+    order: -1;
+  }
+
+  .pool-card-content {
+    width: 100% !important;
+    margin-top: 1rem;
+  }
+}
+
+.gender-icon-details {
+  height: 40px;
+  width: 40px;
+}
+
+#info-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
 #info-tabs .tab-btn {
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 10px;
-  transition: 0.2s;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: #f1f1f1;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #495057;
+}
+
+#info-tabs .tab-btn:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
 }
 
 #info-tabs .tab-btn.active {
   background: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+}
+
+#info-tabs .tab-btn i {
+  font-size: 1.3rem;
+}
+
+.tab-panel {
+  padding: 15px;
+  border-radius: 10px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.tab-panel.d-none {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #info-tabs {
+    gap: 10px;
+  }
+
+  #info-tabs .tab-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
 }
