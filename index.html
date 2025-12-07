@@ -4,18 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>iranticket</title>
+    <link rel="stylesheet" href="./src/assets/css/main.css" />
     <script type="module" src="./src/js/main.js" defer></script>
   </head>
   <body dir="rtl">
     <section class="container">
-      <div>
+      <!-- main page -->
+      <div id="main-page" class="shadow p-2 my-2 border rounded-3">
         <!-- pagination -->
-        <div id="pool-pagination"></div>
+        <div
+          id="pool-pagination"
+          class="d-flex justify-content-between mt-2"
+        ></div>
 
         <!-- cards -->
         <div id="pool-cards"></div>
       </div>
+
+      <!-- pool details -->
+      <div id="pool-detail"></div>
     </section>
-    <div id="pool-detail"></div>
   </body>
 </html>
