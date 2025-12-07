@@ -166,7 +166,7 @@ function renderPagination(currentPage, maxPage) {
     poolPagination.append(next, info, prev);
 }
 
-// route handler
+// route logic
 function showPoolDetail(link) {
     mainPage.hide();
     poolDetail.show();

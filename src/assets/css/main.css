@@ -36,26 +36,31 @@
   cursor: pointer;
 }
 
-/* pool detail css */
-@media (min-width: 992px) {
-  .pool-card-lg {
-    flex-direction: column !important;
-  }
-
-  .pool-card-img {
-    width: 100% !important;
-    order: -1;
-  }
-
-  .pool-card-content {
-    width: 100% !important;
-    margin-top: 1rem;
-  }
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .gender-icon-details {
-  height: 40px;
   width: 40px;
+  height: 40px;
+}
+
+/* pool detail css */
+.line-clamp {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 992px) {
+  .line-clamp {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
 }
 
 #info-tabs {
@@ -106,6 +111,27 @@
 
 .tab-panel.d-none {
   display: none;
+}
+
+@media (min-width: 992px) {
+  .pool-card-lg {
+    flex-direction: column !important;
+  }
+
+  .pool-card-img {
+    width: 100% !important;
+    order: -1;
+  }
+
+  .pool-card-content {
+    width: 100% !important;
+    margin-top: 1rem;
+  }
+
+  .gender-icon-details {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media (max-width: 768px) {
